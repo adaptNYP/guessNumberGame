@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #output {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        #guessInput {
+            padding: 5px;
+            font-size: 1em;
+        }
+
+        #result {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+		
+		#numberOfGuesses {
+			font-size: 1.2em;
+			color: red;
+		}
+    </style>
+</head>
+<body>
+    <h1>Guess the Number Game</h1>
+    <p id="output">Set the lower and upper bounds:</p>
+    <label for="lowerBound">Lower Bound:</label>
+    <input type="number" id="lowerBound" min="1" max="100">
+    <br>
+    <label for="upperBound">Upper Bound:</label>
+    <input type="number" id="upperBound" min="1" max="100">
+    <br>
+    <button onclick="startGame()">Start Game</button>
+    <br>
+    <p id="output">Enter your guess:</p>
+    <input type="number" id="guessInput" min="1" max="100">
+    <br>
+    <button onclick="checkGuess()">Submit Guess</button>
+	<p id="output">Number of guesses: <span id="numberOfGuesses">0</span></p>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        let lowerBound, upperBound, secretNumber, attempts;
+
+        function startGame() {
+            lowerBound = parseInt(document.getElementById('lowerBound').value) || 1;
+            upperBound = parseInt(document.getElementById('upperBound').value) || 100;
+
+            secretNumber = Math.floor(Math.random() * (upperBound - lowerBound + 1)) + lowerBound;
+            attempts = 0;
+
+            document.getElementById('output').innerHTML = `Enter your guess between ${lowerBound} and ${upperBound}:`;
+			document.getElementById('numberOfGuesses').innerHTML = 0;
+			document.getElementById('guessInput').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function checkGuess() {
+            const userGuess = parseInt(document.getElementById('guessInput').value);
+
+            if (isNaN(userGuess)) {
+                alert('Please enter a valid number.');
+                return;
+            }
+			
+			attempts++;
+			document.getElementById('numberOfGuesses').innerText = attempts;
+
+            if (userGuess === secretNumber) {
+                document.getElementById('result').innerHTML = `Congratulations! You guessed the correct number in ${attempts} attempt${attempts>1?'s':''}.`;
+            } else if (userGuess < secretNumber) {
+                document.getElementById('result').innerHTML = 'Incorrect guess. The correct number is larger.';
+            } else {
+                document.getElementById('result').innerHTML = 'Incorrect guess. The correct number is smaller.';
+            }
+        }
+    </script>
+</body>
+</html>
